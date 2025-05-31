@@ -115,6 +115,7 @@ namespace Convenience_Store_Management.GUI
             this.btnThemHH.TabIndex = 8;
             this.btnThemHH.Text = "Thêm";
             this.btnThemHH.UseVisualStyleBackColor = true;
+            this.btnThemHH.Click += new System.EventHandler(this.btnThemHH_Click);
             // 
             // label4
             // 
@@ -216,6 +217,7 @@ namespace Convenience_Store_Management.GUI
             this.btnXoaHH.TabIndex = 9;
             this.btnXoaHH.Text = "Xóa";
             this.btnXoaHH.UseVisualStyleBackColor = true;
+            this.btnXoaHH.Click += new System.EventHandler(this.btnXoaHH_Click);
             // 
             // label5
             // 

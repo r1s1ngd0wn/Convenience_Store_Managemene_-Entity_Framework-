@@ -114,7 +114,7 @@ namespace QLBanHang_3Tang.BS_layer
                     {
                         string maSanPham = row.Field<string>("MaSanPham");
                         int soLuong = row.Field<int>("SoLuong");
-                        decimal giaBan = row.Field<decimal>("Gia");
+                        decimal giaBan = row.Field<decimal>("GiaBan");
                         decimal thanhTien = row.Field<decimal>("ThanhTien");
 
                         if (!ThemChiTietBan(dbContext, maHoaDonBan, maSanPham, soLuong, giaBan, thanhTien, ref error))
@@ -293,13 +293,61 @@ namespace QLBanHang_3Tang.BS_layer
 
         public DataSet LayLoiNhuan(string filterType, ref string error)
         {
-            // Note: True profit calculation requires GiaNhap from CHI_TIET_NHAP,
-            // but the current schema and existing ADO.NET code in BLHoaDonBan
-            // simplify profit to be the same as revenue.
-            // For a correct profit calculation, you would need to join with HangHoa to get GiaNhap
-            // or have GiaNhap in ChiTietBan.
-            // For now, mirroring original behavior.
-            return LayDoanhThu(filterType, ref error);
+            try
+            {
+                using (var dbContext = new ConvenienceStoreDbContext())
+                {
+                    // Query ChiTietBan and include HoaDonBan (for NgayBan) and HangHoa (for GiaNhap)
+                    IQueryable<ChiTietBan> query = dbContext.ChiTietBans
+                                                        .Include(ctb => ctb.HoaDonBan)
+                                                        .Include(ctb => ctb.HangHoa); // Eager load HangHoa to access GiaNhap
+
+                    DateTime now = DateTime.Now;
+                    if (filterType == "Tuần")
+                    {
+                        DateTime startOfWeek = now.Date.AddDays(-(int)now.DayOfWeek + (int)DayOfWeek.Monday);
+                        DateTime endOfWeek = startOfWeek.AddDays(7);
+                        query = query.Where(ctb => ctb.HoaDonBan.NgayBan >= startOfWeek && ctb.HoaDonBan.NgayBan < endOfWeek);
+                    }
+                    else if (filterType == "Tháng")
+                    {
+                        DateTime startOfMonth = new DateTime(now.Year, now.Month, 1);
+                        DateTime endOfMonth = startOfMonth.AddMonths(1);
+                        query = query.Where(ctb => ctb.HoaDonBan.NgayBan >= startOfMonth && ctb.HoaDonBan.NgayBan < endOfMonth);
+                    }
+
+                    var result = query
+                        .GroupBy(ctb => new { ctb.MaHoaDonBan, ctb.HoaDonBan.NgayBan }) // Group by invoice
+                        .Select(g => new
+                        {
+                            g.Key.MaHoaDonBan,
+                            g.Key.NgayBan,
+                            // Calculate total profit for each invoice: Sum of (SalePrice - ImportPrice) * Quantity
+                            TongLoiNhuan = g.Sum(ctb => (ctb.GiaBan - ctb.HangHoa.GiaNhap) * ctb.SoLuong)
+                        })
+                        .OrderByDescending(x => x.NgayBan)
+                        .ToList();
+
+                    DataTable dt = new DataTable();
+                    dt.Columns.Add("MaHoaDonBan", typeof(string));
+                    dt.Columns.Add("NgayBan", typeof(DateTime));
+                    dt.Columns.Add("TongLoiNhuan", typeof(decimal)); // New column name for profit
+
+                    foreach (var item in result)
+                    {
+                        dt.Rows.Add(item.MaHoaDonBan, item.NgayBan, item.TongLoiNhuan);
+                    }
+
+                    DataSet ds = new DataSet();
+                    ds.Tables.Add(dt);
+                    return ds;
+                }
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                return null;
+            }
         }
 
         public DataSet LayCacMatHangDaBan(string filterType, ref string error)
@@ -356,6 +404,32 @@ namespace QLBanHang_3Tang.BS_layer
             {
                 error = ex.Message;
                 return null;
+            }
+        }
+
+        // Helper method to get product details by MaSanPham
+        // This method is crucial for UC_HoaDon's new functionality
+        public DataTable GetProductDetailsByMaSP(string maSP)
+        {
+            using (var dbContext = new ConvenienceStoreDbContext())
+            {
+                var product = dbContext.HangHoas
+                                       .Where(hh => hh.MaSanPham == maSP)
+                                       .Select(hh => new { hh.MaSanPham, hh.TenSP, hh.Gia, hh.SoLuong })
+                                       .FirstOrDefault();
+
+                if (product != null)
+                {
+                    DataTable dt = new DataTable();
+                    dt.Columns.Add("MaSanPham", typeof(string));
+                    dt.Columns.Add("TenSP", typeof(string));
+                    dt.Columns.Add("Gia", typeof(decimal)); // This is sale price
+                    dt.Columns.Add("SoLuong", typeof(int)); // This is stock quantity
+
+                    dt.Rows.Add(product.MaSanPham, product.TenSP, product.Gia, product.SoLuong);
+                    return dt;
+                }
+                return null; // Product not found
             }
         }
 

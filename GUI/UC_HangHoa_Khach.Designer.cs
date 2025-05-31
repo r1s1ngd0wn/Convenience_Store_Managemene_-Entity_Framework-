@@ -41,9 +41,10 @@ namespace Convenience_Store_Management.GUI
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(0, 167);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.Size = new System.Drawing.Size(864, 378);
@@ -64,7 +65,7 @@ namespace Convenience_Store_Management.GUI
             // 
             this.btnThemGioHang.Font = new System.Drawing.Font("Sans Serif Collection", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnThemGioHang.Location = new System.Drawing.Point(682, 114);
-            this.btnThemGioHang.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnThemGioHang.Margin = new System.Windows.Forms.Padding(2);
             this.btnThemGioHang.Name = "btnThemGioHang";
             this.btnThemGioHang.Size = new System.Drawing.Size(130, 35);
             this.btnThemGioHang.TabIndex = 18;
@@ -85,7 +86,7 @@ namespace Convenience_Store_Management.GUI
             // soluongText
             // 
             this.soluongText.Location = new System.Drawing.Point(260, 86);
-            this.soluongText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.soluongText.Margin = new System.Windows.Forms.Padding(2);
             this.soluongText.Name = "soluongText";
             this.soluongText.Size = new System.Drawing.Size(357, 20);
             this.soluongText.TabIndex = 20;
@@ -99,9 +100,10 @@ namespace Convenience_Store_Management.GUI
             this.Controls.Add(this.btnThemGioHang);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.dataGridView1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "UC_HangHoa_Khach";
             this.Size = new System.Drawing.Size(864, 547);
+            this.Load += new System.EventHandler(this.UC_HangHoa_Khach_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -23,6 +23,7 @@ namespace Convenience_Store_Management.GUI
 
         private void UC_ThanhVien_Khach_Load(object sender, EventArgs e)
         {
+            txtNewPwd.Visible = true;
             string error = "";
             // Lấy tên đăng nhập hiện tại từ SDT khách hàng (đã đăng nhập)
             string currentUsername = blTaiKhoan.LayTenDangNhapTuSDTKhachHang(SessionManager.CurrentLoggedInCustomerSdt, ref error); //
@@ -40,7 +41,7 @@ namespace Convenience_Store_Management.GUI
         private void chkShowPassword_CheckedChanged(object sender, EventArgs e)
         {
             txtCurrentPassword.PasswordChar = chkShowPassword.Checked ? '\0' : '*';
-            txtNewPassword.PasswordChar = chkShowPassword.Checked ? '\0' : '*';
+            txtNewPwd.PasswordChar = chkShowPassword.Checked ? '\0' : '*';
             txtConfirmNewPassword.PasswordChar = chkShowPassword.Checked ? '\0' : '*';
         }
 
@@ -49,7 +50,7 @@ namespace Convenience_Store_Management.GUI
             string currentUsername = txtCurrentUsername.Text.Trim(); // Tên đăng nhập hiện tại (không đổi)
             string currentPassword = txtCurrentPassword.Text.Trim();
             // txtNewUsername không được sử dụng
-            string newPassword = txtNewPassword.Text.Trim();
+            string newPassword = txtNewPwd.Text.Trim();
             string confirmNewPassword = txtConfirmNewPassword.Text.Trim();
             string sdtKhachHang = SessionManager.CurrentLoggedInCustomerSdt; // Lấy SDT khách hàng đã đăng nhập
 

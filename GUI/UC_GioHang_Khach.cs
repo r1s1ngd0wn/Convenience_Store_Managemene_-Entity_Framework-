@@ -14,16 +14,20 @@ namespace Convenience_Store_Management.GUI
 {
     public partial class UC_GioHang_Khach : UserControl
     {
-        // Sử dụng DataTable để lưu trữ giỏ hàng trong bộ nhớ
         private DataTable cartTable = new DataTable();
-        private BLHangHoa blHangHoa = new BLHangHoa();
-        private BLHoaDonBan blHoaDonBan = new BLHoaDonBan();
+        private BLHangHoa blHangHoa; // Declare but don't initialize here
+        private BLHoaDonBan blHoaDonBan; // Declare but don't initialize here
 
         public UC_GioHang_Khach()
         {
             InitializeComponent();
-            SetupCartTable();    // Khởi tạo cấu trúc DataTable
-            // RefreshCartDisplay(); // Không cần gọi ở đây vì SetupCartTable đã gán DataSource
+            // Initialize BLL objects only when not in design mode
+            if (!DesignMode)
+            {
+                blHangHoa = new BLHangHoa();
+                blHoaDonBan = new BLHoaDonBan();
+            }
+            SetupCartTable();
         }
 
         private void SetupCartTable()
@@ -31,7 +35,7 @@ namespace Convenience_Store_Management.GUI
             // Định nghĩa các cột cho DataTable giống như bạn muốn hiển thị trên DataGridView
             cartTable.Columns.Add("MaSanPham", typeof(string));
             cartTable.Columns.Add("TenSP", typeof(string));
-            cartTable.Columns.Add("Gia", typeof(decimal));
+            cartTable.Columns.Add("GiaBan", typeof(decimal)); // Column name is GiaBan
             cartTable.Columns.Add("SoLuong", typeof(int));
             cartTable.Columns.Add("ThanhTien", typeof(decimal)); // Cột tính toán
 
@@ -48,9 +52,13 @@ namespace Convenience_Store_Management.GUI
             if (!dgvGioHang.Columns.Contains("TenSP")) dgvGioHang.Columns.Add("TenSP", "Tên Sản Phẩm");
             dgvGioHang.Columns["TenSP"].DataPropertyName = "TenSP";
 
-            if (!dgvGioHang.Columns.Contains("Gia")) dgvGioHang.Columns.Add("Gia", "Giá");
-            dgvGioHang.Columns["Gia"].DataPropertyName = "Gia";
-            dgvGioHang.Columns["Gia"].DefaultCellStyle.Format = "N0";
+            // Fix the column binding to GiaBan
+            if (!dgvGioHang.Columns.Contains("GiaBan")) // Check for "GiaBan" instead of "Gia"
+            {
+                dgvGioHang.Columns.Add("GiaBan", "Giá Bán"); // Header text can be "Giá Bán" for clarity
+            }
+            dgvGioHang.Columns["GiaBan"].DataPropertyName = "GiaBan"; // CHANGE: DataPropertyName to "GiaBan"
+            dgvGioHang.Columns["GiaBan"].DefaultCellStyle.Format = "N0"; // Apply format to "GiaBan"
 
             if (!dgvGioHang.Columns.Contains("SoLuong")) dgvGioHang.Columns.Add("SoLuong", "Số Lượng");
             dgvGioHang.Columns["SoLuong"].DataPropertyName = "SoLuong";
@@ -75,7 +83,7 @@ namespace Convenience_Store_Management.GUI
             {
                 // Nếu có rồi, tăng số lượng và cập nhật thành tiền
                 int currentSoLuong = existingRow.Field<int>("SoLuong");
-                decimal currentGia = existingRow.Field<decimal>("Gia");
+                decimal currentGia = existingRow.Field<decimal>("GiaBan"); // Correctly accessing "GiaBan"
 
                 existingRow["SoLuong"] = currentSoLuong + soLuong;
                 existingRow["ThanhTien"] = (currentSoLuong + soLuong) * currentGia;
@@ -86,20 +94,15 @@ namespace Convenience_Store_Management.GUI
                 DataRow newRow = cartTable.NewRow();
                 newRow["MaSanPham"] = maSanPham;
                 newRow["TenSP"] = tenSP;
-                newRow["Gia"] = gia;
+                newRow["GiaBan"] = gia; // Correctly setting "GiaBan"
                 newRow["SoLuong"] = soLuong;
                 newRow["ThanhTien"] = soLuong * gia;
                 cartTable.Rows.Add(newRow);
             }
-            // Không cần gọi Refresh() cho DataGridView nếu DataSource là DataTable
-            // DataTable tự động cập nhật khi thay đổi dữ liệu bên trong.
-            // dgvGioHang.Refresh(); // Có thể bỏ qua nếu bạn thấy nó tự cập nhật
         }
 
         private void RefreshCartDisplay()
         {
-            // Nếu bạn dùng DataTable làm DataSource, việc thay đổi DataTable sẽ tự động cập nhật DGV.
-            // Tuy nhiên, đôi khi Refresh() hoặc Invalidate() có thể giúp cập nhật ngay lập tức nếu có vấn đề về hiển thị.
             dgvGioHang.Refresh();
         }
 
@@ -120,7 +123,6 @@ namespace Convenience_Store_Management.GUI
                     cartTable.Rows.Remove(rowToRemove); // Xóa dòng khỏi DataTable
 
                     MessageBox.Show($"Đã xóa '{tenSP}' khỏi giỏ hàng.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    // RefreshCartDisplay(); // DataTable tự cập nhật DGV
                 }
             }
             else
@@ -138,20 +140,9 @@ namespace Convenience_Store_Management.GUI
             }
 
             string errorMessage = "";
-            bool success = true;
+            // bool success = true; // Variable not used
 
-            // For customer-initiated checkout, set MaNhanVien to NULL
-            string maNhanVien = null; // Changed from SessionManager.CurrentLoggedInEmployeeId;
-
-            // Remove validation for maNhanVien as it's now optional for customer checkouts
-            // if (string.IsNullOrEmpty(maNhanVien))
-            // {
-            //     MessageBox.Show("Không có nhân viên nào đang đăng nhập. Vui lòng đăng nhập với vai trò nhân viên để thực hiện thanh toán.", "Lỗi Thanh Toán", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //     return;
-            // }
-
-            // SDTKhachHang will still come from SessionManager if customer is logged in
-
+            string maNhanVien = null; // For customer-initiated checkout
             string sdtKhachHang = SessionManager.CurrentLoggedInCustomerSdt;
 
             string maHoaDonBanMoi = "HDB" + DateTime.Now.ToString("yyyyMMddHHmmss");

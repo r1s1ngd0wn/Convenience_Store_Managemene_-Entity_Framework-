@@ -13,10 +13,6 @@ namespace Convenience_Store_Management.GUI
         public UC_ThongKe()
         {
             InitializeComponent();
-            // Initialize ComboBoxes
-            cbDoanhThu.Items.AddRange(new string[] { "Tuần", "Tháng" });
-            cbLoiNhuan.Items.AddRange(new string[] { "Tuần", "Tháng" });
-            cbHangHoa.Items.AddRange(new string[] { "Tuần", "Tháng" });
 
             // Set default selections
             cbDoanhThu.SelectedIndex = 0;

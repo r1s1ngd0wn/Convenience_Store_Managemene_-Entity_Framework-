@@ -81,6 +81,7 @@ namespace Convenience_Store_Management.GUI
             // 
             // dgvDoanhThu
             // 
+            this.dgvDoanhThu.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDoanhThu.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDoanhThu.Location = new System.Drawing.Point(4, 181);
             this.dgvDoanhThu.Margin = new System.Windows.Forms.Padding(2);
@@ -127,6 +128,7 @@ namespace Convenience_Store_Management.GUI
             // 
             // dgvLoiNhuan
             // 
+            this.dgvLoiNhuan.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvLoiNhuan.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvLoiNhuan.Location = new System.Drawing.Point(4, 180);
             this.dgvLoiNhuan.Margin = new System.Windows.Forms.Padding(2);
@@ -173,6 +175,7 @@ namespace Convenience_Store_Management.GUI
             // 
             // dgvHHDaBan
             // 
+            this.dgvHHDaBan.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvHHDaBan.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvHHDaBan.Location = new System.Drawing.Point(4, 180);
             this.dgvHHDaBan.Margin = new System.Windows.Forms.Padding(2);

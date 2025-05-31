@@ -24,7 +24,7 @@ namespace Convenience_Store_Management.GUI
             this.label2 = new System.Windows.Forms.Label();
             this.txtCurrentUsername = new System.Windows.Forms.TextBox();
             this.txtCurrentPassword = new System.Windows.Forms.TextBox();
-            this.txtNewUsername = new System.Windows.Forms.TextBox();
+            this.txtNewPwd = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.txtNewPassword = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -37,7 +37,7 @@ namespace Convenience_Store_Management.GUI
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Sans Serif Collection", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(29, 147);
+            this.label1.Location = new System.Drawing.Point(29, 111);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(196, 39);
@@ -48,7 +48,7 @@ namespace Convenience_Store_Management.GUI
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Sans Serif Collection", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(29, 204);
+            this.label2.Location = new System.Drawing.Point(29, 180);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(162, 39);
@@ -58,7 +58,7 @@ namespace Convenience_Store_Management.GUI
             // 
             // txtCurrentUsername
             // 
-            this.txtCurrentUsername.Location = new System.Drawing.Point(448, 166);
+            this.txtCurrentUsername.Location = new System.Drawing.Point(448, 123);
             this.txtCurrentUsername.Margin = new System.Windows.Forms.Padding(2);
             this.txtCurrentUsername.Name = "txtCurrentUsername";
             this.txtCurrentUsername.ReadOnly = true;
@@ -67,27 +67,27 @@ namespace Convenience_Store_Management.GUI
             // 
             // txtCurrentPassword
             // 
-            this.txtCurrentPassword.Location = new System.Drawing.Point(448, 223);
+            this.txtCurrentPassword.Location = new System.Drawing.Point(448, 192);
             this.txtCurrentPassword.Margin = new System.Windows.Forms.Padding(2);
             this.txtCurrentPassword.Name = "txtCurrentPassword";
             this.txtCurrentPassword.PasswordChar = '*';
             this.txtCurrentPassword.Size = new System.Drawing.Size(232, 20);
             this.txtCurrentPassword.TabIndex = 3;
             // 
-            // txtNewUsername
+            // txtNewPwd
             // 
-            this.txtNewUsername.Location = new System.Drawing.Point(448, 279);
-            this.txtNewUsername.Margin = new System.Windows.Forms.Padding(2);
-            this.txtNewUsername.Name = "txtNewUsername";
-            this.txtNewUsername.Size = new System.Drawing.Size(232, 20);
-            this.txtNewUsername.TabIndex = 5;
-            this.txtNewUsername.Visible = false;
+            this.txtNewPwd.Location = new System.Drawing.Point(448, 263);
+            this.txtNewPwd.Margin = new System.Windows.Forms.Padding(2);
+            this.txtNewPwd.Name = "txtNewPwd";
+            this.txtNewPwd.Size = new System.Drawing.Size(232, 20);
+            this.txtNewPwd.TabIndex = 5;
+            this.txtNewPwd.Visible = false;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Sans Serif Collection", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(29, 260);
+            this.label4.Location = new System.Drawing.Point(29, 251);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(176, 39);
@@ -107,7 +107,7 @@ namespace Convenience_Store_Management.GUI
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Sans Serif Collection", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(29, 315);
+            this.label5.Location = new System.Drawing.Point(29, 322);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(244, 39);
@@ -139,7 +139,7 @@ namespace Convenience_Store_Management.GUI
             // 
             this.chkShowPassword.AutoSize = true;
             this.chkShowPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkShowPassword.Location = new System.Drawing.Point(695, 301);
+            this.chkShowPassword.Location = new System.Drawing.Point(684, 266);
             this.chkShowPassword.Margin = new System.Windows.Forms.Padding(2);
             this.chkShowPassword.Name = "chkShowPassword";
             this.chkShowPassword.Size = new System.Drawing.Size(152, 24);
@@ -158,7 +158,7 @@ namespace Convenience_Store_Management.GUI
             this.Controls.Add(this.label5);
             this.Controls.Add(this.txtNewPassword);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.txtNewUsername);
+            this.Controls.Add(this.txtNewPwd);
             this.Controls.Add(this.txtCurrentPassword);
             this.Controls.Add(this.txtCurrentUsername);
             this.Controls.Add(this.label2);
@@ -178,7 +178,7 @@ namespace Convenience_Store_Management.GUI
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtCurrentUsername;
         private System.Windows.Forms.TextBox txtCurrentPassword;
-        private System.Windows.Forms.TextBox txtNewUsername;
+        private System.Windows.Forms.TextBox txtNewPwd;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5; // Đã sửa lỗi ở đây
         private System.Windows.Forms.TextBox txtNewPassword;

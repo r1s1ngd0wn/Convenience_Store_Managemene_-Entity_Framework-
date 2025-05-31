@@ -75,6 +75,7 @@ namespace Convenience_Store_Management.GUI
             // 
             // dgvGioHang
             // 
+            this.dgvGioHang.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvGioHang.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvGioHang.Location = new System.Drawing.Point(2, 120);
             this.dgvGioHang.Margin = new System.Windows.Forms.Padding(2);
