@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Convenience_Store_Management.Helper;
 using QLBanHang_3Tang.BS_layer;
 
 namespace Convenience_Store_Management.GUI
@@ -145,14 +146,17 @@ namespace Convenience_Store_Management.GUI
 
         private void UC_HoaDon_Load(object sender, EventArgs e)
         {
-
+            txtMaHD.Text = "HDB" + DateTime.Now.ToString("yyyyMMddHHmmss"); // Generate a new invoice code
+            txtMaHD.ReadOnly = true; // Make MaHD read-only since it's auto-generated
+            txtMaNV.Text = SessionManager.CurrentLoggedInEmployeeId; // Assuming this is set when the employee logs in
+            txtMaNV.ReadOnly = true; // Make MaNV read-only since it's auto-filled from session
         }
 
         private void btnXuLyHD_Click(object sender, EventArgs e)
         {
-            string maHoaDon = txtMaHD.Text.Trim();
-            string maNhanVien = txtMaNV.Text.Trim();
-            DateTime ngayBan = dtpNgayBan.Value;
+            string maHoaDon = "HDB" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            string maNhanVien = SessionManager.CurrentLoggedInEmployeeId; // Assuming this is set when the employee logs in
+            DateTime ngayBan = dtpNgayBan.Value; // Get the selected date
 
             // Validate invoice header fields
             if (string.IsNullOrEmpty(maHoaDon) || string.IsNullOrEmpty(maNhanVien))
@@ -171,15 +175,15 @@ namespace Convenience_Store_Management.GUI
             string error = "";
             string sdtKhachHang = null; // Assuming no customer SDT input on this UI
 
-            // Reuse ProcessSaleTransaction from BLHoaDonBan
-            if (blHoaDonBan.ProcessSaleTransaction(maHoaDon, maNhanVien, sdtKhachHang, invoiceDetailTable, ref error))
+            // FIX: Include the ngayBan parameter in the ProcessSaleTransaction call
+            if (blHoaDonBan.ProcessSaleTransaction(maHoaDon, maNhanVien, sdtKhachHang, invoiceDetailTable, ngayBan, ref error))
             {
                 MessageBox.Show("Hóa đơn đã được hoàn tất thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // Clear all fields and the temporary invoice details table
                 txtMaHD.Clear();
                 txtMaNV.Clear();
-                dtpNgayBan.Value = DateTime.Now;
+                dtpNgayBan.Value = DateTime.Now; // Reset for next invoice
                 invoiceDetailTable.Clear(); // Clear all rows from the DataTable
             }
             else

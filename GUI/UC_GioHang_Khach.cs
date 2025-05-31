@@ -148,7 +148,7 @@ namespace Convenience_Store_Management.GUI
             string maHoaDonBanMoi = "HDB" + DateTime.Now.ToString("yyyyMMddHHmmss");
             DateTime ngayBan = DateTime.Now;
 
-            if (blHoaDonBan.ProcessSaleTransaction(maHoaDonBanMoi, maNhanVien, sdtKhachHang, cartTable, ref errorMessage))
+            if (blHoaDonBan.ProcessSaleTransaction(maHoaDonBanMoi, maNhanVien, sdtKhachHang, cartTable, ngayBan, ref errorMessage))
             {
                 MessageBox.Show("Thanh toán thành công! Giỏ hàng đã được xóa.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 cartTable.Clear();

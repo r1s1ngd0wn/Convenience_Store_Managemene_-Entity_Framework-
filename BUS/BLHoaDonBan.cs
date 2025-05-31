@@ -92,7 +92,7 @@ namespace QLBanHang_3Tang.BS_layer
 
         // Method to process a full sales transaction (used by UC_GioHang_Khach)
         public bool ProcessSaleTransaction(string maHoaDonBan, string maNhanVien, string sdtKhachHang,
-                                           DataTable cartItems, ref string error)
+                                           DataTable cartItems, DateTime ngayBan, ref string error)
         {
             // totalBillAmount is calculated but not inserted into HOA_DON_BAN as per your request
             // decimal totalBillAmount = 0; // Removed as not used in this method
@@ -104,7 +104,7 @@ namespace QLBanHang_3Tang.BS_layer
                 {
                     transaction = dbContext.Database.BeginTransaction(); // Begin EF transaction
 
-                    if (!ThemHoaDonBan(dbContext, maHoaDonBan, maNhanVien, sdtKhachHang, DateTime.Now, ref error))
+                    if (!ThemHoaDonBan(dbContext, maHoaDonBan, maNhanVien, sdtKhachHang, ngayBan, ref error)) // Changed DateTime.Now to ngayBan
                     {
                         transaction.Rollback();
                         return false;
