@@ -36,11 +36,11 @@ namespace Convenience_Store_Management
             this.panelNhanVien = new System.Windows.Forms.Panel();
             this.btnThanhVien = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnGioHang = new System.Windows.Forms.Button();
             this.btnSanPham = new System.Windows.Forms.Button();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.panelNhanVien.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlKhachHang
@@ -54,9 +54,9 @@ namespace Convenience_Store_Management
             // panelNhanVien
             // 
             this.panelNhanVien.BackColor = System.Drawing.Color.Red;
+            this.panelNhanVien.Controls.Add(this.pictureBox2);
             this.panelNhanVien.Controls.Add(this.btnThanhVien);
             this.panelNhanVien.Controls.Add(this.btnExit);
-            this.panelNhanVien.Controls.Add(this.pictureBox1);
             this.panelNhanVien.Controls.Add(this.btnGioHang);
             this.panelNhanVien.Controls.Add(this.btnSanPham);
             this.panelNhanVien.Location = new System.Drawing.Point(-1, -1);
@@ -87,19 +87,6 @@ namespace Convenience_Store_Management
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.White;
-            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(2, 2);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(113, 86);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 4;
-            this.pictureBox1.TabStop = false;
-            // 
             // btnGioHang
             // 
             this.btnGioHang.Location = new System.Drawing.Point(2, 170);
@@ -122,6 +109,19 @@ namespace Convenience_Store_Management
             this.btnSanPham.UseVisualStyleBackColor = true;
             this.btnSanPham.Click += new System.EventHandler(this.btnSanPham_Click);
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.Color.White;
+            this.pictureBox2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(12, 12);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(91, 73);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox2.TabIndex = 7;
+            this.pictureBox2.TabStop = false;
+            // 
             // FormKhachHang
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -133,7 +133,7 @@ namespace Convenience_Store_Management
             this.Name = "FormKhachHang";
             this.Text = "FormKhachHang";
             this.panelNhanVien.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -143,11 +143,11 @@ namespace Convenience_Store_Management
         private Panel pnlKhachHang;
         private Panel panelNhanVien;
         private Button btnExit;
-        private PictureBox pictureBox1;
         private Button btnThongKe;
         private Button btnTimKiem;
         private Button btnGioHang;
         private Button btnSanPham;
         private Button btnThanhVien;
+        private PictureBox pictureBox2;
     }
 }
