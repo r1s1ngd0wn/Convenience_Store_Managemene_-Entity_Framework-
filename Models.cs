@@ -22,12 +22,12 @@ namespace Convenience_Store_Management.Models
         public int SoLuong { get; set; }
 
         [Required]
-        //[Column(TypeName = "DECIMAL(18, 2)")]
         public decimal Gia { get; set; } // Selling Price
 
         [Required]
-        //[Column(TypeName = "DECIMAL(18, 2)")]
         public decimal GiaNhap { get; set; } // Import Price
+
+        public bool IsActive { get; set; } // Property for soft deletion flag
 
         // Navigation properties for relationships
         public virtual ICollection<ChiTietBan> ChiTietBans { get; set; }

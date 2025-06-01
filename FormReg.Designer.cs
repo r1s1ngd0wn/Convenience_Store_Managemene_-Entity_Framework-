@@ -157,6 +157,7 @@ namespace Convenience_Store_Management
             this.NhanVienCb.TabIndex = 10;
             this.NhanVienCb.Text = "Nhân viên";
             this.NhanVienCb.UseVisualStyleBackColor = true;
+            this.NhanVienCb.CheckedChanged += new System.EventHandler(this.NhanVienCb_CheckedChanged);
             // 
             // KhachHangCb
             // 

@@ -57,11 +57,11 @@ namespace Convenience_Store_Management
         {
             string username = txtAccount.Text.Trim();
             string password = txtPwd.Text.Trim();
-            string identifier = "";
+            string identifier = ""; // Holds MaNhanVien or SDT
             string userRole = "";
             string error = "";
-            string fullName = username; // Assuming username is used as full name for simplicity in registration
-            DateTime? ngaySinh = null; // Assuming no date of birth input in registration for customers
+            string fullName = username; // Assuming username is used as full name
+            DateTime? ngaySinh = null; // Date of birth (dob parameter for customer), null for employee
 
             if (NhanVienCb.Checked)
             {
@@ -91,6 +91,10 @@ namespace Convenience_Store_Management
                 return;
             }
 
+            // Sanitize phone number to ensure only digits
+            string cleanPhoneNumber = new string(sdt_text.Text.Trim().Where(char.IsDigit).ToArray());
+
+
             // Validate identifier field(s) based on role
             if (userRole == "Employee")
             {
@@ -99,35 +103,35 @@ namespace Convenience_Store_Management
                     MessageBox.Show("Vui lòng nhập Mã NV của bạn.", "Lỗi Đăng Ký", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                if (string.IsNullOrEmpty(sdt_text.Text.Trim()))
+                if (string.IsNullOrEmpty(cleanPhoneNumber)) // Use cleanPhoneNumber for validation
                 {
                     MessageBox.Show("Vui lòng nhập SĐT của nhân viên.", "Lỗi Đăng Ký", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 // Validate phone number length for employee
-                if (sdt_text.Text.Trim().Length != 10 || !sdt_text.Text.Trim().All(char.IsDigit))
+                if (cleanPhoneNumber.Length != 10)
                 {
-                    MessageBox.Show("Số điện thoại nhân viên phải có đúng 10 chữ số và chỉ chứa số.", "Lỗi Đăng Ký", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Số điện thoại nhân viên phải có đúng 10 chữ số.", "Lỗi Đăng Ký", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                identifier = manv_text.Text.Trim();
-                fullName = username; // Assuming username is employee's full name
+                identifier = manv_text.Text.Trim(); // MaNhanVien
+                fullName = username; // HoTenNV (used as full name for employee)
             }
             else if (userRole == "Customer")
             {
-                if (string.IsNullOrEmpty(sdt_text.Text.Trim()))
+                if (string.IsNullOrEmpty(cleanPhoneNumber)) // Use cleanPhoneNumber for validation
                 {
                     MessageBox.Show("Vui lòng nhập SĐT của khách hàng.", "Lỗi Đăng Ký", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 // Validate phone number length for customer
-                if (sdt_text.Text.Trim().Length != 10 || !sdt_text.Text.Trim().All(char.IsDigit))
+                if (cleanPhoneNumber.Length != 10)
                 {
-                    MessageBox.Show("Số điện thoại khách hàng phải có đúng 10 chữ số và chỉ chứa số.", "Lỗi Đăng Ký", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Số điện thoại khách hàng phải có đúng 10 chữ số.", "Lỗi Đăng Ký", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                identifier = sdt_text.Text.Trim();
-                fullName = username; // Assuming username is customer's full name
+                identifier = cleanPhoneNumber; // SDT for customer
+                fullName = username; // TenKH (used as full name for customer)
             }
 
             // Check if username already exists to prevent duplicate registrations
@@ -139,22 +143,49 @@ namespace Convenience_Store_Management
 
             try
             {
-                // Use the new RegisterAccount method
-                if (blTaiKhoan.RegisterAccount(username, password, userRole, identifier, fullName, ngaySinh, ref error))
+                // FIX: Pass all required arguments to RegisterAccount based on userRole
+                if (userRole == "Employee")
                 {
-                    MessageBox.Show("Đăng ký tài khoản thành công!", "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    FormLogin formLogin = new FormLogin();
-                    formLogin.Show();
-                    this.Close();
+                    if (blTaiKhoan.RegisterAccount(username, password, userRole, identifier, fullName, cleanPhoneNumber, null, ref error))
+                    {
+                        MessageBox.Show("Đăng ký tài khoản thành công!", "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        FormLogin formLogin = new FormLogin();
+                        formLogin.Show();
+                        this.Close();
+                    }
+                }
+                else if (userRole == "Customer")
+                {
+                    if (blTaiKhoan.RegisterAccount(username, password, userRole, identifier, fullName, null, ngaySinh, ref error))
+                    {
+                        MessageBox.Show("Đăng ký tài khoản thành công!", "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        FormLogin formLogin = new FormLogin();
+                        formLogin.Show();
+                        this.Close();
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("Đăng ký tài khoản thất bại: " + error, "Lỗi Đăng Ký", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Lỗi: Loại tài khoản không xác định.", "Lỗi Đăng Ký", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Lỗi trong quá trình đăng ký: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void NhanVienCb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (NhanVienCb.Checked)
+            {
+                KhachHangCb.Checked = false;
+                UpdateVisibilityBasedOnRole();
             }
         }
 
@@ -165,11 +196,6 @@ namespace Convenience_Store_Management
                 NhanVienCb.Checked = false;
                 UpdateVisibilityBasedOnRole();
             }
-        }
-
-        private void btnExit_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
         }
     }
 }
