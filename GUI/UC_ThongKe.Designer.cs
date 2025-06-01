@@ -93,6 +93,7 @@ namespace Convenience_Store_Management.GUI
             // 
             this.cbDoanhThu.FormattingEnabled = true;
             this.cbDoanhThu.Items.AddRange(new object[] {
+            "Tất cả",
             "Tuần",
             "Tháng"});
             this.cbDoanhThu.Location = new System.Drawing.Point(196, 86);
@@ -140,6 +141,7 @@ namespace Convenience_Store_Management.GUI
             // 
             this.cbLoiNhuan.FormattingEnabled = true;
             this.cbLoiNhuan.Items.AddRange(new object[] {
+            "Tất cả",
             "Tuần",
             "Tháng"});
             this.cbLoiNhuan.Location = new System.Drawing.Point(193, 86);
@@ -187,6 +189,7 @@ namespace Convenience_Store_Management.GUI
             // 
             this.cbHangHoa.FormattingEnabled = true;
             this.cbHangHoa.Items.AddRange(new object[] {
+            "Tất cả",
             "Tuần",
             "Tháng"});
             this.cbHangHoa.Location = new System.Drawing.Point(195, 86);

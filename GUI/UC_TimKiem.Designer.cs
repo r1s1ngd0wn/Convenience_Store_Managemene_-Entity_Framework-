@@ -47,6 +47,13 @@ namespace Convenience_Store_Management.GUI
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.dataGridView4 = new System.Windows.Forms.DataGridView();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtGiaBanMoi = new System.Windows.Forms.TextBox();
+            this.txtGiaNhapMoi = new System.Windows.Forms.TextBox();
+            this.txtSoLuongMoi = new System.Windows.Forms.TextBox();
+            this.btnUpdate = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -70,6 +77,13 @@ namespace Convenience_Store_Management.GUI
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.btnUpdate);
+            this.tabPage1.Controls.Add(this.txtSoLuongMoi);
+            this.tabPage1.Controls.Add(this.txtGiaNhapMoi);
+            this.tabPage1.Controls.Add(this.txtGiaBanMoi);
+            this.tabPage1.Controls.Add(this.label6);
+            this.tabPage1.Controls.Add(this.label4);
+            this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.btnTimHH);
             this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.txtMaHH);
@@ -86,7 +100,7 @@ namespace Convenience_Store_Management.GUI
             // btnTimHH
             // 
             this.btnTimHH.Font = new System.Drawing.Font("Sans Serif Collection", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTimHH.Location = new System.Drawing.Point(395, 102);
+            this.btnTimHH.Location = new System.Drawing.Point(146, 59);
             this.btnTimHH.Margin = new System.Windows.Forms.Padding(2);
             this.btnTimHH.Name = "btnTimHH";
             this.btnTimHH.Size = new System.Drawing.Size(91, 35);
@@ -98,20 +112,20 @@ namespace Convenience_Store_Management.GUI
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Sans Serif Collection", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(5, 57);
+            this.label5.Font = new System.Drawing.Font("Sans Serif Collection", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(3, 14);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(171, 39);
+            this.label5.Size = new System.Drawing.Size(137, 32);
             this.label5.TabIndex = 9;
             this.label5.Text = "Mã hàng hóa:";
             // 
             // txtMaHH
             // 
-            this.txtMaHH.Font = new System.Drawing.Font("Sans Serif Collection", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMaHH.Location = new System.Drawing.Point(182, 49);
+            this.txtMaHH.Font = new System.Drawing.Font("Sans Serif Collection", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMaHH.Location = new System.Drawing.Point(146, 11);
             this.txtMaHH.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtMaHH.Name = "txtMaHH";
-            this.txtMaHH.Size = new System.Drawing.Size(213, 47);
+            this.txtMaHH.Size = new System.Drawing.Size(169, 35);
             this.txtMaHH.TabIndex = 8;
             // 
             // dataGridView1
@@ -239,6 +253,74 @@ namespace Convenience_Store_Management.GUI
             this.dataGridView4.Size = new System.Drawing.Size(854, 362);
             this.dataGridView4.TabIndex = 1;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Sans Serif Collection", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(351, 14);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(126, 32);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Giá bán mới:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Sans Serif Collection", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(351, 62);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(138, 32);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Giá nhập mới:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Sans Serif Collection", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(351, 111);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(136, 32);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Số lượng mới:";
+            // 
+            // txtGiaBanMoi
+            // 
+            this.txtGiaBanMoi.Font = new System.Drawing.Font("Sans Serif Collection", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtGiaBanMoi.Location = new System.Drawing.Point(513, 4);
+            this.txtGiaBanMoi.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtGiaBanMoi.Name = "txtGiaBanMoi";
+            this.txtGiaBanMoi.Size = new System.Drawing.Size(169, 35);
+            this.txtGiaBanMoi.TabIndex = 14;
+            // 
+            // txtGiaNhapMoi
+            // 
+            this.txtGiaNhapMoi.Font = new System.Drawing.Font("Sans Serif Collection", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtGiaNhapMoi.Location = new System.Drawing.Point(513, 59);
+            this.txtGiaNhapMoi.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtGiaNhapMoi.Name = "txtGiaNhapMoi";
+            this.txtGiaNhapMoi.Size = new System.Drawing.Size(169, 35);
+            this.txtGiaNhapMoi.TabIndex = 15;
+            // 
+            // txtSoLuongMoi
+            // 
+            this.txtSoLuongMoi.Font = new System.Drawing.Font("Sans Serif Collection", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSoLuongMoi.Location = new System.Drawing.Point(513, 108);
+            this.txtSoLuongMoi.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.txtSoLuongMoi.Name = "txtSoLuongMoi";
+            this.txtSoLuongMoi.Size = new System.Drawing.Size(169, 35);
+            this.txtSoLuongMoi.TabIndex = 16;
+            // 
+            // btnUpdate
+            // 
+            this.btnUpdate.Font = new System.Drawing.Font("Sans Serif Collection", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpdate.Location = new System.Drawing.Point(723, 62);
+            this.btnUpdate.Margin = new System.Windows.Forms.Padding(2);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(113, 35);
+            this.btnUpdate.TabIndex = 17;
+            this.btnUpdate.Text = "Cập nhật";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            // 
             // UC_TimKiem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -280,5 +362,12 @@ namespace Convenience_Store_Management.GUI
         private Button btnTimKH;
         private Label label2;
         private TextBox textBox1;
+        private Label label4;
+        private Label label3;
+        private Button btnUpdate;
+        private TextBox txtSoLuongMoi;
+        private TextBox txtGiaNhapMoi;
+        private TextBox txtGiaBanMoi;
+        private Label label6;
     }
 }

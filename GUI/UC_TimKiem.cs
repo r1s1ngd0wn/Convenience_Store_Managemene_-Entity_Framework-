@@ -17,6 +17,10 @@ namespace Convenience_Store_Management.GUI
             InitializeComponent();
             // Hook up the Load event handler
             this.Load += new System.EventHandler(this.UC_TimKiem_Load);
+            // NEW: Hook up the btnUpdate's Click event
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            // Optional: When a row is selected in dataGridView1, populate the update textboxes
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClickForUpdate);
         }
 
         // NEW: UC_TimKiem_Load event handler to preload data
@@ -29,6 +33,8 @@ namespace Convenience_Store_Management.GUI
             btnTimHD_Click(null, null); // Preload all invoices
             btnTimKH_Click(null, null); // Preload all customers
         }
+
+
 
         // Event handler for "Tìm kiếm" (Search) button on "Hàng hóa" tab
         private void btnTimHH_Click(object sender, EventArgs e)
@@ -48,6 +54,100 @@ namespace Convenience_Store_Management.GUI
             {
                 MessageBox.Show($"Lỗi tìm kiếm hàng hóa: {error}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 dataGridView1.DataSource = null;
+            }
+        }
+
+        //Event handler to populate update textboxes when a row is clicked
+        private void dataGridView1_CellClickForUpdate(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0) // Ensure a valid cell is clicked
+            {
+                DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
+                // Populate textboxes with current values for editing
+                txtGiaBanMoi.Text = row.Cells["Gia"].Value?.ToString();
+                txtGiaNhapMoi.Text = row.Cells["GiaNhap"].Value?.ToString();
+                txtSoLuongMoi.Text = row.Cells["SoLuong"].Value?.ToString();
+            }
+        }
+
+        // NEW: Event handler for btnUpdate (Update button)
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            // 1. Get selected MaSanPham from the DataGridView
+            if (dataGridView1.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Vui lòng chọn một hàng hóa từ danh sách để cập nhật.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string maSanPham = dataGridView1.SelectedRows[0].Cells["MaSanPham"].Value?.ToString();
+            if (string.IsNullOrEmpty(maSanPham))
+            {
+                MessageBox.Show("Không thể lấy Mã Sản Phẩm từ hàng đã chọn. Vui lòng thử lại.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // 2. Get new values from the update textboxes
+            string giaBanMoiStr = txtGiaBanMoi.Text.Trim();
+            string giaNhapMoiStr = txtGiaNhapMoi.Text.Trim();
+            string soLuongMoiStr = txtSoLuongMoi.Text.Trim();
+
+            // 3. Validate input
+            decimal newGiaBan;
+            decimal newGiaNhap;
+            int newSoLuong;
+
+            if (string.IsNullOrEmpty(giaBanMoiStr) || string.IsNullOrEmpty(giaNhapMoiStr) || string.IsNullOrEmpty(soLuongMoiStr))
+            {
+                MessageBox.Show("Vui lòng điền đầy đủ tất cả các trường cập nhật (Giá bán mới, Giá nhập mới, Số lượng mới).", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!decimal.TryParse(giaBanMoiStr, out newGiaBan) || newGiaBan <= 0)
+            {
+                MessageBox.Show("Giá bán mới phải là một số dương.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (!decimal.TryParse(giaNhapMoiStr, out newGiaNhap) || newGiaNhap < 0)
+            {
+                MessageBox.Show("Giá nhập mới phải là một số không âm.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (!int.TryParse(soLuongMoiStr, out newSoLuong) || newSoLuong < 0)
+            {
+                MessageBox.Show("Số lượng mới phải là một số nguyên không âm.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // 4. Call BLL method to update the product
+            string error = "";
+            bool success = false;
+
+            try
+            {
+                success = blHangHoa.CapNhatHangHoa(maSanPham, newGiaBan, newGiaNhap, newSoLuong, ref error);
+
+                if (success)
+                {
+                    MessageBox.Show($"Cập nhật hàng hóa '{maSanPham}' thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    // Clear input fields after successful update
+                    txtGiaBanMoi.Clear();
+                    txtGiaNhapMoi.Clear();
+                    txtSoLuongMoi.Clear();
+
+                    // 5. Refresh the DataGridView to show updated data
+                    // Re-run the current search by simulating a click on btnTimHH (Tìm kiếm button)
+                    btnTimHH_Click(null, null);
+                }
+                else
+                {
+                    MessageBox.Show($"Cập nhật hàng hóa thất bại: {error}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Đã xảy ra lỗi không mong muốn trong quá trình cập nhật hàng hóa: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

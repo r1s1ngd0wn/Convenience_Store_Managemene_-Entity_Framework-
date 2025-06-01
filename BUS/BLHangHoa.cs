@@ -23,16 +23,17 @@ namespace QLBanHang_3Tang.BS_layer
         {
             using (var dbContext = new ConvenienceStoreDbContext())
             {
-                var hangHoas = dbContext.HangHoas.Select(hh => new
-                {
-                    hh.MaSanPham,
-                    hh.TenSP,
-                    hh.SoLuong,
-                    hh.Gia,
-                    hh.GiaNhap
-                }).ToList(); // Fetch data
+                var hangHoas = dbContext.HangHoas
+                                       .Where(hh => hh.IsActive) // Only active products
+                                       .Select(hh => new
+                                       {
+                                           hh.MaSanPham,
+                                           hh.TenSP,
+                                           hh.SoLuong,
+                                           hh.Gia,
+                                           hh.GiaNhap
+                                       }).ToList();
 
-                // Convert to DataSet for compatibility with existing UI
                 DataTable dt = new DataTable();
                 dt.Columns.Add("MaSanPham", typeof(string));
                 dt.Columns.Add("TenSP", typeof(string));
@@ -63,7 +64,8 @@ namespace QLBanHang_3Tang.BS_layer
                         TenSP = tenSP,
                         SoLuong = soLuong,
                         Gia = gia,
-                        GiaNhap = giaNhap
+                        GiaNhap = giaNhap,
+                        IsActive = true
                     };
 
                     dbContext.HangHoas.Add(newHangHoa);
@@ -84,16 +86,16 @@ namespace QLBanHang_3Tang.BS_layer
             {
                 using (var dbContext = new ConvenienceStoreDbContext())
                 {
-                    var hangHoaToDelete = dbContext.HangHoas.Find(maSanPham); // Find by primary key
-                    if (hangHoaToDelete != null)
+                    var hangHoaToDeactivate = dbContext.HangHoas.Find(maSanPham);
+                    if (hangHoaToDeactivate != null)
                     {
-                        dbContext.HangHoas.Remove(hangHoaToDelete);
+                        hangHoaToDeactivate.IsActive = false; // Mark as inactive instead of deleting
                         dbContext.SaveChanges();
                         return true;
                     }
                     else
                     {
-                        error = "Không tìm thấy hàng hóa để xóa.";
+                        error = "Không tìm thấy hàng hóa để ngưng kinh doanh.";
                         return false;
                     }
                 }
@@ -132,14 +134,15 @@ namespace QLBanHang_3Tang.BS_layer
                 using (var dbContext = new ConvenienceStoreDbContext())
                 {
                     var hangHoas = dbContext.HangHoas
-                                           .Where(hh => hh.MaSanPham.Contains(maSanPham))
+                                           .Where(hh => hh.MaSanPham.Contains(maSanPham) && hh.IsActive) // Search and filter by active
                                            .Select(hh => new
                                            {
                                                hh.MaSanPham,
                                                hh.TenSP,
                                                hh.SoLuong,
                                                hh.Gia,
-                                               hh.GiaNhap
+                                               hh.GiaNhap,
+                                               IsActive = true
                                            }).ToList();
 
                     DataTable dt = new DataTable();
@@ -163,6 +166,42 @@ namespace QLBanHang_3Tang.BS_layer
             {
                 error = ex.Message;
                 return null;
+            }
+        }
+
+        public bool CapNhatHangHoa(string maSanPham, decimal newGia, decimal newGiaNhap, int newSoLuong, ref string error)
+        {
+            try
+            {
+                using (var dbContext = new ConvenienceStoreDbContext())
+                {
+                    var productToUpdate = dbContext.HangHoas.Find(maSanPham); // Find by primary key
+
+                    if (productToUpdate != null)
+                    {
+                        productToUpdate.Gia = newGia;
+                        productToUpdate.GiaNhap = newGiaNhap;
+                        productToUpdate.SoLuong = newSoLuong;
+
+                        dbContext.SaveChanges(); // Commit changes to the database
+                        return true;
+                    }
+                    else
+                    {
+                        error = "Không tìm thấy hàng hóa để cập nhật.";
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                error = ex.Message;
+                // Include inner exception message for better debugging
+                if (ex.InnerException != null)
+                {
+                    error += "\nInner Exception: " + ex.InnerException.Message;
+                }
+                return false;
             }
         }
     }

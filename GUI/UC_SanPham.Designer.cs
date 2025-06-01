@@ -31,6 +31,7 @@ namespace Convenience_Store_Management.GUI
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label6 = new System.Windows.Forms.Label();
@@ -48,9 +49,11 @@ namespace Convenience_Store_Management.GUI
             this.btnXoaHH = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.txtMaHHXoa = new System.Windows.Forms.TextBox();
+            this.dgvXoaHH = new System.Windows.Forms.DataGridView();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvXoaHH)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -195,10 +198,11 @@ namespace Convenience_Store_Management.GUI
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.dgvXoaHH);
             this.tabPage2.Controls.Add(this.btnXoaHH);
             this.tabPage2.Controls.Add(this.label5);
             this.tabPage2.Controls.Add(this.txtMaHHXoa);
-            this.tabPage2.Font = new System.Drawing.Font("Sans Serif Collection", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tabPage2.Font = new System.Drawing.Font("Sans Serif Collection", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage2.Name = "tabPage2";
@@ -210,10 +214,10 @@ namespace Convenience_Store_Management.GUI
             // 
             // btnXoaHH
             // 
-            this.btnXoaHH.Location = new System.Drawing.Point(596, 270);
+            this.btnXoaHH.Location = new System.Drawing.Point(741, 154);
             this.btnXoaHH.Margin = new System.Windows.Forms.Padding(2);
             this.btnXoaHH.Name = "btnXoaHH";
-            this.btnXoaHH.Size = new System.Drawing.Size(129, 44);
+            this.btnXoaHH.Size = new System.Drawing.Size(110, 32);
             this.btnXoaHH.TabIndex = 9;
             this.btnXoaHH.Text = "Xóa";
             this.btnXoaHH.UseVisualStyleBackColor = true;
@@ -223,7 +227,7 @@ namespace Convenience_Store_Management.GUI
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Sans Serif Collection", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(110, 138);
+            this.label5.Location = new System.Drawing.Point(77, 80);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(171, 39);
@@ -232,11 +236,28 @@ namespace Convenience_Store_Management.GUI
             // 
             // txtMaHHXoa
             // 
-            this.txtMaHHXoa.Location = new System.Drawing.Point(311, 123);
+            this.txtMaHHXoa.Location = new System.Drawing.Point(271, 80);
             this.txtMaHHXoa.Margin = new System.Windows.Forms.Padding(2);
             this.txtMaHHXoa.Name = "txtMaHHXoa";
-            this.txtMaHHXoa.Size = new System.Drawing.Size(414, 54);
+            this.txtMaHHXoa.Size = new System.Drawing.Size(414, 39);
             this.txtMaHHXoa.TabIndex = 4;
+            // 
+            // dgvXoaHH
+            // 
+            this.dgvXoaHH.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvXoaHH.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Sans Serif Collection", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvXoaHH.DefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvXoaHH.Location = new System.Drawing.Point(5, 191);
+            this.dgvXoaHH.Name = "dgvXoaHH";
+            this.dgvXoaHH.Size = new System.Drawing.Size(846, 323);
+            this.dgvXoaHH.TabIndex = 10;
             // 
             // UC_SanPham
             // 
@@ -251,6 +272,7 @@ namespace Convenience_Store_Management.GUI
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvXoaHH)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -274,5 +296,6 @@ namespace Convenience_Store_Management.GUI
         private TextBox txtMaHHXoa;
         private Label label6;
         private TextBox txtGiaNhap;
+        private DataGridView dgvXoaHH;
     }
 }

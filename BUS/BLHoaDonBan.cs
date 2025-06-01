@@ -1,10 +1,10 @@
 ﻿// BUS/BLHoaDonBan.cs
 using System;
 using System.Data;
-using System.Linq; // For LINQ queries
+using System.Linq;
 using Convenience_Store_Management.DAL;
-using Convenience_Store_Management.Models; // Add this namespace
-using System.Data.Entity; // For transactions and Include
+using Convenience_Store_Management.Models;
+using System.Data.Entity;
 
 namespace QLBanHang_3Tang.BS_layer
 {
@@ -244,15 +244,16 @@ namespace QLBanHang_3Tang.BS_layer
                 {
                     IQueryable<HoaDonBan> query = dbContext.HoaDonBans.Include(hdb => hdb.ChiTietBans);
 
-                    DateTime now = DateTime.Now;
                     if (filterType == "Tuần")
                     {
+                        DateTime now = DateTime.Now;
                         DateTime startOfWeek = now.Date.AddDays(-(int)now.DayOfWeek + (int)DayOfWeek.Monday);
                         DateTime endOfWeek = startOfWeek.AddDays(7);
                         query = query.Where(hdb => hdb.NgayBan >= startOfWeek && hdb.NgayBan < endOfWeek);
                     }
                     else if (filterType == "Tháng")
                     {
+                        DateTime now = DateTime.Now;
                         DateTime startOfMonth = new DateTime(now.Year, now.Month, 1);
                         DateTime endOfMonth = startOfMonth.AddMonths(1);
                         query = query.Where(hdb => hdb.NgayBan >= startOfMonth && hdb.NgayBan < endOfMonth);
@@ -302,27 +303,27 @@ namespace QLBanHang_3Tang.BS_layer
                                                         .Include(ctb => ctb.HoaDonBan)
                                                         .Include(ctb => ctb.HangHoa); // Eager load HangHoa to access GiaNhap
 
-                    DateTime now = DateTime.Now;
                     if (filterType == "Tuần")
                     {
+                        DateTime now = DateTime.Now;
                         DateTime startOfWeek = now.Date.AddDays(-(int)now.DayOfWeek + (int)DayOfWeek.Monday);
                         DateTime endOfWeek = startOfWeek.AddDays(7);
                         query = query.Where(ctb => ctb.HoaDonBan.NgayBan >= startOfWeek && ctb.HoaDonBan.NgayBan < endOfWeek);
                     }
                     else if (filterType == "Tháng")
                     {
+                        DateTime now = DateTime.Now;
                         DateTime startOfMonth = new DateTime(now.Year, now.Month, 1);
                         DateTime endOfMonth = startOfMonth.AddMonths(1);
                         query = query.Where(ctb => ctb.HoaDonBan.NgayBan >= startOfMonth && ctb.HoaDonBan.NgayBan < endOfMonth);
                     }
 
                     var result = query
-                        .GroupBy(ctb => new { ctb.MaHoaDonBan, ctb.HoaDonBan.NgayBan }) // Group by invoice
+                        .GroupBy(ctb => new { ctb.MaHoaDonBan, ctb.HoaDonBan.NgayBan })
                         .Select(g => new
                         {
                             g.Key.MaHoaDonBan,
                             g.Key.NgayBan,
-                            // Calculate total profit for each invoice: Sum of (SalePrice - ImportPrice) * Quantity
                             TongLoiNhuan = g.Sum(ctb => (ctb.GiaBan - ctb.HangHoa.GiaNhap) * ctb.SoLuong)
                         })
                         .OrderByDescending(x => x.NgayBan)
@@ -358,31 +359,32 @@ namespace QLBanHang_3Tang.BS_layer
                 {
                     IQueryable<ChiTietBan> query = dbContext.ChiTietBans.Include(ctb => ctb.HoaDonBan).Include(ctb => ctb.HangHoa);
 
-                    DateTime now = DateTime.Now;
                     if (filterType == "Tuần")
                     {
+                        DateTime now = DateTime.Now;
                         DateTime startOfWeek = now.Date.AddDays(-(int)now.DayOfWeek + (int)DayOfWeek.Monday);
                         DateTime endOfWeek = startOfWeek.AddDays(7);
                         query = query.Where(ctb => ctb.HoaDonBan.NgayBan >= startOfWeek && ctb.HoaDonBan.NgayBan < endOfWeek);
                     }
                     else if (filterType == "Tháng")
                     {
+                        DateTime now = DateTime.Now;
                         DateTime startOfMonth = new DateTime(now.Year, now.Month, 1);
                         DateTime endOfMonth = startOfMonth.AddMonths(1);
                         query = query.Where(ctb => ctb.HoaDonBan.NgayBan >= startOfMonth && ctb.HoaDonBan.NgayBan < endOfMonth);
                     }
 
                     var result = query
-                        .GroupBy(ctb => new { ctb.MaSanPham, ctb.HangHoa.TenSP })
-                        .Select(g => new
-                        {
-                            g.Key.MaSanPham,
-                            g.Key.TenSP,
-                            TongSoLuongDaBan = g.Sum(ctb => ctb.SoLuong),
-                            TongThanhTien = g.Sum(ctb => ctb.ThanhTien)
-                        })
-                        .OrderByDescending(x => x.TongSoLuongDaBan)
-                        .ToList();
+                       .GroupBy(ctb => new { ctb.MaSanPham, ctb.HangHoa.TenSP })
+                       .Select(g => new
+                       {
+                           g.Key.MaSanPham,
+                           g.Key.TenSP,
+                           TongSoLuongDaBan = g.Sum(ctb => ctb.SoLuong),
+                           TongThanhTien = g.Sum(ctb => ctb.ThanhTien)
+                       })
+                       .OrderByDescending(x => x.TongSoLuongDaBan)
+                       .ToList();
 
                     DataTable dt = new DataTable();
                     dt.Columns.Add("MaSanPham", typeof(string));
@@ -414,7 +416,7 @@ namespace QLBanHang_3Tang.BS_layer
             using (var dbContext = new ConvenienceStoreDbContext())
             {
                 var product = dbContext.HangHoas
-                                       .Where(hh => hh.MaSanPham == maSP)
+                                       .Where(hh => hh.MaSanPham == maSP && hh.IsActive) // Only active products can be sold
                                        .Select(hh => new { hh.MaSanPham, hh.TenSP, hh.Gia, hh.SoLuong })
                                        .FirstOrDefault();
 
@@ -423,13 +425,13 @@ namespace QLBanHang_3Tang.BS_layer
                     DataTable dt = new DataTable();
                     dt.Columns.Add("MaSanPham", typeof(string));
                     dt.Columns.Add("TenSP", typeof(string));
-                    dt.Columns.Add("Gia", typeof(decimal)); // This is sale price
-                    dt.Columns.Add("SoLuong", typeof(int)); // This is stock quantity
+                    dt.Columns.Add("Gia", typeof(decimal));
+                    dt.Columns.Add("SoLuong", typeof(int));
 
                     dt.Rows.Add(product.MaSanPham, product.TenSP, product.Gia, product.SoLuong);
                     return dt;
                 }
-                return null; // Product not found
+                return null;
             }
         }
 
