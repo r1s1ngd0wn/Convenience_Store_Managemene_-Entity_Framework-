@@ -1,12 +1,10 @@
-﻿// Models.cs
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Convenience_Store_Management.Models
 {
-    // HANG_HOA (Products)
     [Table("HANG_HOA")]
     public class HangHoa
     {

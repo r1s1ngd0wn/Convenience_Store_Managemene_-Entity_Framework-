@@ -47,16 +47,15 @@ namespace Convenience_Store_Management.GUI
 
         private void btnChangeCredentials_Click(object sender, EventArgs e)
         {
-            string currentUsername = txtCurrentUsername.Text.Trim(); // Tên đăng nhập hiện tại (không đổi)
+            string currentUsername = txtCurrentUsername.Text.Trim();
             string currentPassword = txtCurrentPassword.Text.Trim();
-            // txtNewUsername không được sử dụng
+            //New username is not used
             string newPassword = txtNewPwd.Text.Trim();
             string confirmNewPassword = txtConfirmNewPassword.Text.Trim();
-            string sdtKhachHang = SessionManager.CurrentLoggedInCustomerSdt; // Lấy SDT khách hàng đã đăng nhập
+            string sdtKhachHang = SessionManager.CurrentLoggedInCustomerSdt; 
 
             string error = "";
 
-            // 1. Xác thực thông tin đầu vào
             if (string.IsNullOrEmpty(currentPassword) || string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmNewPassword))
             {
                 MessageBox.Show("Vui lòng điền đầy đủ tất cả các trường mật khẩu.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -75,7 +74,6 @@ namespace Convenience_Store_Management.GUI
                 return;
             }
 
-            // 2. Kiểm tra mật khẩu cũ có đúng không
             bool isCurrentPasswordValid = blTaiKhoan.KiemTraDangNhap(currentUsername, currentPassword, "Customer", ref error); //
             if (!isCurrentPasswordValid)
             {
@@ -83,12 +81,10 @@ namespace Convenience_Store_Management.GUI
                 return;
             }
 
-            // 3. Gọi phương thức BL để chỉ cập nhật mật khẩu
-            // Gọi phương thức mới hoặc sửa đổi CapNhatTaiKhoanKhachHang để chỉ cập nhật mật khẩu
             if (blTaiKhoan.CapNhatMatKhauKhachHang(sdtKhachHang, currentUsername, newPassword, ref error)) //
             {
                 MessageBox.Show("Cập nhật mật khẩu thành công!", "Thành Công", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                // Sau khi đổi thành công, xóa các trường mật khẩu
+
                 txtCurrentPassword.Clear();
                 txtNewPassword.Clear();
                 txtConfirmNewPassword.Clear();

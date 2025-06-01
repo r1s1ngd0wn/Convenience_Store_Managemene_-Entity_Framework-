@@ -1,5 +1,4 @@
-﻿// GUI/UC_ThongKe.cs
-using System;
+﻿using System;
 using System.Data;
 using System.Windows.Forms;
 using QLBanHang_3Tang.BS_layer;
@@ -8,13 +7,12 @@ namespace Convenience_Store_Management.GUI
 {
     public partial class UC_ThongKe : UserControl
     {
-        private BLHoaDonBan blHoaDonBan = new BLHoaDonBan(); // Use BLHoaDonBan for statistics
+        private BLHoaDonBan blHoaDonBan = new BLHoaDonBan();
 
         public UC_ThongKe()
         {
             InitializeComponent();
 
-            // Set default selections
             cbDoanhThu.SelectedIndex = 0;
             cbLoiNhuan.SelectedIndex = 0;
             cbHangHoa.SelectedIndex = 0;
@@ -22,7 +20,6 @@ namespace Convenience_Store_Management.GUI
 
         private void UC_ThongKe_Load(object sender, EventArgs e)
         {
-            // Initial load of data for each tab
             LoadDoanhThuData();
             LoadLoiNhuanData();
             LoadHangHoaDaBanData();
@@ -91,7 +88,6 @@ namespace Convenience_Store_Management.GUI
             }
         }
 
-        // ComboBox SelectedIndexChanged events
         private void cbDoanhThu_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadDoanhThuData();

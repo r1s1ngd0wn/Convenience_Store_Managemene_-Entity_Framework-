@@ -1,5 +1,4 @@
-﻿// BUS/BLHoaDonBan.cs
-using System;
+﻿using System;
 using System.Data;
 using System.Linq;
 using Convenience_Store_Management.DAL;
@@ -10,15 +9,10 @@ namespace QLBanHang_3Tang.BS_layer
 {
     public class BLHoaDonBan
     {
-        // No longer need ConnectDB directly. Remove public ConnectDB db;
-        // DbContext instances will be created per operation.
-
         public BLHoaDonBan()
         {
         }
 
-        // Method to add a sales invoice (HOA_DON_BAN) - 5 arguments
-        // This method will now take a DbContext parameter for transaction management
         public bool ThemHoaDonBan(ConvenienceStoreDbContext dbContext, string maHoaDonBan, string maNhanVien, string sdtKhachHang, DateTime ngayBan, ref string error)
         {
             try
@@ -40,8 +34,6 @@ namespace QLBanHang_3Tang.BS_layer
             }
         }
 
-        // Method to add a sales detail item (CHI_TIET_BAN)
-        // This method will now take a DbContext parameter for transaction management
         public bool ThemChiTietBan(ConvenienceStoreDbContext dbContext, string maHoaDonBan, string maSanPham, int soLuong, decimal giaBan, decimal thanhTien, ref string error)
         {
             try
@@ -64,8 +56,6 @@ namespace QLBanHang_3Tang.BS_layer
             }
         }
 
-        // Method to update product stock quantity (increase or decrease)
-        // This method will now take a DbContext parameter for transaction management
         public bool CapNhatSoLuongHangHoa(ConvenienceStoreDbContext dbContext, string maSanPham, int soLuongThayDoi, ref string error)
         {
             try
@@ -74,7 +64,6 @@ namespace QLBanHang_3Tang.BS_layer
                 if (hangHoa != null)
                 {
                     hangHoa.SoLuong += soLuongThayDoi;
-                    // dbContext.Entry(hangHoa).State = EntityState.Modified; // Often not needed if entity is tracked
                     return true; // SaveChanges will be called at the end of the transaction
                 }
                 else
@@ -94,17 +83,14 @@ namespace QLBanHang_3Tang.BS_layer
         public bool ProcessSaleTransaction(string maHoaDonBan, string maNhanVien, string sdtKhachHang,
                                            DataTable cartItems, DateTime ngayBan, ref string error)
         {
-            // totalBillAmount is calculated but not inserted into HOA_DON_BAN as per your request
-            // decimal totalBillAmount = 0; // Removed as not used in this method
-
             using (var dbContext = new ConvenienceStoreDbContext())
             {
                 DbContextTransaction transaction = null;
                 try
                 {
-                    transaction = dbContext.Database.BeginTransaction(); // Begin EF transaction
+                    transaction = dbContext.Database.BeginTransaction();
 
-                    if (!ThemHoaDonBan(dbContext, maHoaDonBan, maNhanVien, sdtKhachHang, ngayBan, ref error)) // Changed DateTime.Now to ngayBan
+                    if (!ThemHoaDonBan(dbContext, maHoaDonBan, maNhanVien, sdtKhachHang, ngayBan, ref error))
                     {
                         transaction.Rollback();
                         return false;
@@ -128,7 +114,6 @@ namespace QLBanHang_3Tang.BS_layer
                             transaction.Rollback();
                             return false;
                         }
-                        // totalBillAmount += thanhTien; // Keep calculating total for internal use if needed // Removed as not used
                     }
 
                     dbContext.SaveChanges(); // Commit all changes
@@ -147,7 +132,7 @@ namespace QLBanHang_3Tang.BS_layer
             }
         }
 
-        // NEW: Method to process a single sales invoice transaction (used by UC_HoaDon)
+        // Method to process a single sales invoice transaction (used by UC_HoaDon)
         public bool ProcessSingleInvoiceTransaction(string maHoaDon, string maNhanVien, string tenSanPham, int soLuong, DateTime ngayBan, ref string error)
         {
             using (var dbContext = new ConvenienceStoreDbContext())
@@ -157,7 +142,6 @@ namespace QLBanHang_3Tang.BS_layer
                 {
                     transaction = dbContext.Database.BeginTransaction();
 
-                    // Get MaSanPham from TenSP
                     string maSanPham = LayMaSanPhamTuTen(tenSanPham);
                     if (string.IsNullOrEmpty(maSanPham))
                     {
@@ -166,7 +150,6 @@ namespace QLBanHang_3Tang.BS_layer
                         return false;
                     }
 
-                    // Get GiaBan from MaSanPham
                     decimal? giaBan = LayGiaBan(maSanPham);
                     if (giaBan == null)
                     {
@@ -176,7 +159,7 @@ namespace QLBanHang_3Tang.BS_layer
                     }
 
                     decimal thanhTien = soLuong * giaBan.Value;
-                    string sdtKhachHang = null; // Assuming SDTKhachHang is nullable for single invoice UI
+                    string sdtKhachHang = null;
 
                     if (!ThemHoaDonBan(dbContext, maHoaDon, maNhanVien, sdtKhachHang, ngayBan, ref error))
                     {
@@ -301,7 +284,7 @@ namespace QLBanHang_3Tang.BS_layer
                     // Query ChiTietBan and include HoaDonBan (for NgayBan) and HangHoa (for GiaNhap)
                     IQueryable<ChiTietBan> query = dbContext.ChiTietBans
                                                         .Include(ctb => ctb.HoaDonBan)
-                                                        .Include(ctb => ctb.HangHoa); // Eager load HangHoa to access GiaNhap
+                                                        .Include(ctb => ctb.HangHoa);
 
                     if (filterType == "Tuần")
                     {
@@ -332,7 +315,7 @@ namespace QLBanHang_3Tang.BS_layer
                     DataTable dt = new DataTable();
                     dt.Columns.Add("MaHoaDonBan", typeof(string));
                     dt.Columns.Add("NgayBan", typeof(DateTime));
-                    dt.Columns.Add("TongLoiNhuan", typeof(decimal)); // New column name for profit
+                    dt.Columns.Add("TongLoiNhuan", typeof(decimal));
 
                     foreach (var item in result)
                     {
@@ -410,13 +393,12 @@ namespace QLBanHang_3Tang.BS_layer
         }
 
         // Helper method to get product details by MaSanPham
-        // This method is crucial for UC_HoaDon's new functionality
         public DataTable GetProductDetailsByMaSP(string maSP)
         {
             using (var dbContext = new ConvenienceStoreDbContext())
             {
                 var product = dbContext.HangHoas
-                                       .Where(hh => hh.MaSanPham == maSP && hh.IsActive) // Only active products can be sold
+                                       .Where(hh => hh.MaSanPham == maSP && hh.IsActive)
                                        .Select(hh => new { hh.MaSanPham, hh.TenSP, hh.Gia, hh.SoLuong })
                                        .FirstOrDefault();
 
@@ -435,7 +417,6 @@ namespace QLBanHang_3Tang.BS_layer
             }
         }
 
-        // Search methods (used by UC_TimKiem)
         public DataSet TimHoaDon(string maHoaDonBan, ref string error)
         {
             try

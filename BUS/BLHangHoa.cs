@@ -1,22 +1,16 @@
-﻿// BUS/BLHangHoa.cs
-using System;
+﻿using System;
 using System.Data;
-using System.Linq; // For LINQ queries
+using System.Linq;
 using Convenience_Store_Management.DAL;
-using Convenience_Store_Management.Models; // Add this namespace
+using Convenience_Store_Management.Models;
 
 namespace QLBanHang_3Tang.BS_layer
 {
     public class BLHangHoa
     {
-        // No longer need ConnectDB directly here.
-        // The DbContext will manage connections.
-
         public BLHangHoa()
         {
-            // DbContext is typically instantiated per-operation or per-request in web apps.
-            // For a desktop app, you might manage its lifecycle differently,
-            // but for simplicity here, we'll create it inside methods as needed.
+            
         }
 
         public DataSet LayHangHoa()
@@ -24,7 +18,7 @@ namespace QLBanHang_3Tang.BS_layer
             using (var dbContext = new ConvenienceStoreDbContext())
             {
                 var hangHoas = dbContext.HangHoas
-                                       .Where(hh => hh.IsActive) // Only active products
+                                       .Where(hh => hh.IsActive)
                                        .Select(hh => new
                                        {
                                            hh.MaSanPham,
@@ -69,7 +63,7 @@ namespace QLBanHang_3Tang.BS_layer
                     };
 
                     dbContext.HangHoas.Add(newHangHoa);
-                    dbContext.SaveChanges(); // Persist changes to the database
+                    dbContext.SaveChanges();
                     return true;
                 }
             }
@@ -89,7 +83,7 @@ namespace QLBanHang_3Tang.BS_layer
                     var hangHoaToDeactivate = dbContext.HangHoas.Find(maSanPham);
                     if (hangHoaToDeactivate != null)
                     {
-                        hangHoaToDeactivate.IsActive = false; // Mark as inactive instead of deleting
+                        hangHoaToDeactivate.IsActive = false;
                         dbContext.SaveChanges();
                         return true;
                     }
@@ -134,7 +128,7 @@ namespace QLBanHang_3Tang.BS_layer
                 using (var dbContext = new ConvenienceStoreDbContext())
                 {
                     var hangHoas = dbContext.HangHoas
-                                           .Where(hh => hh.MaSanPham.Contains(maSanPham) && hh.IsActive) // Search and filter by active
+                                           .Where(hh => hh.MaSanPham.Contains(maSanPham) && hh.IsActive)
                                            .Select(hh => new
                                            {
                                                hh.MaSanPham,
@@ -175,7 +169,7 @@ namespace QLBanHang_3Tang.BS_layer
             {
                 using (var dbContext = new ConvenienceStoreDbContext())
                 {
-                    var productToUpdate = dbContext.HangHoas.Find(maSanPham); // Find by primary key
+                    var productToUpdate = dbContext.HangHoas.Find(maSanPham);
 
                     if (productToUpdate != null)
                     {
@@ -183,7 +177,7 @@ namespace QLBanHang_3Tang.BS_layer
                         productToUpdate.GiaNhap = newGiaNhap;
                         productToUpdate.SoLuong = newSoLuong;
 
-                        dbContext.SaveChanges(); // Commit changes to the database
+                        dbContext.SaveChanges(); 
                         return true;
                     }
                     else

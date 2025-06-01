@@ -1,16 +1,12 @@
-﻿// BUS/BLKhachHang.cs
-using System;
+﻿using System;
 using System.Data;
-using System.Linq; // For LINQ queries
+using System.Linq;
 using Convenience_Store_Management.DAL;
-using Convenience_Store_Management.Models; // Add this namespace
-
+using Convenience_Store_Management.Models;
 namespace QLBanHang_3Tang.BS_layer
 {
     public class BLKhachHang
     {
-        // Remove public ConnectDB db;
-
         public BLKhachHang()
         {
         }

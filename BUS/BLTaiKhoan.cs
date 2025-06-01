@@ -1,11 +1,9 @@
-﻿// BUS/BLTaiKhoan.cs
-using Convenience_Store_Management.DAL;
+﻿using Convenience_Store_Management.DAL;
 using Convenience_Store_Management.Models;
 using System;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
-using System.Windows.Forms; // This using is technically not needed if MessageBox is not used here, but harmless
 
 namespace QLBanHang_3Tang.BS_layer
 {
@@ -143,7 +141,6 @@ namespace QLBanHang_3Tang.BS_layer
             }
         }
 
-        // Combined registration method to ensure atomicity
         public bool RegisterAccount(string username, string password, string userRole, string identifier, string fullName, string employeePhoneNumber, DateTime? dob, ref string error)
         {
             using (var dbContext = new ConvenienceStoreDbContext())

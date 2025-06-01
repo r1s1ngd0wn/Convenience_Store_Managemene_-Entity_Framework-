@@ -31,6 +31,7 @@ namespace Convenience_Store_Management
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLogin));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtAccount = new System.Windows.Forms.TextBox();
@@ -147,7 +148,7 @@ namespace Convenience_Store_Management
             // 
             this.NhanVienCb.AutoSize = true;
             this.NhanVienCb.Location = new System.Drawing.Point(118, 167);
-            this.NhanVienCb.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.NhanVienCb.Margin = new System.Windows.Forms.Padding(2);
             this.NhanVienCb.Name = "NhanVienCb";
             this.NhanVienCb.Size = new System.Drawing.Size(75, 17);
             this.NhanVienCb.TabIndex = 11;
@@ -159,7 +160,7 @@ namespace Convenience_Store_Management
             // 
             this.KhachHangCb.AutoSize = true;
             this.KhachHangCb.Location = new System.Drawing.Point(294, 167);
-            this.KhachHangCb.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.KhachHangCb.Margin = new System.Windows.Forms.Padding(2);
             this.KhachHangCb.Name = "KhachHangCb";
             this.KhachHangCb.Size = new System.Drawing.Size(86, 17);
             this.KhachHangCb.TabIndex = 12;
@@ -195,6 +196,7 @@ namespace Convenience_Store_Management
             this.Controls.Add(this.txtAccount);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FormLogin";
             this.Text = "FormLogin";

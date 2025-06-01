@@ -1,8 +1,7 @@
-﻿// FormReg.cs
-using System;
+﻿using System;
 using System.Windows.Forms;
 using QLBanHang_3Tang.BS_layer;
-using System.Linq; // Added for .All(char.IsDigit)
+using System.Linq;
 
 namespace Convenience_Store_Management
 {
@@ -53,7 +52,7 @@ namespace Convenience_Store_Management
             }
         }
 
-        private void btnLogin_Click(object sender, EventArgs e) // This is your "Sign up" button
+        private void btnLogin_Click(object sender, EventArgs e)
         {
             string username = txtAccount.Text.Trim();
             string password = txtPwd.Text.Trim();
@@ -61,7 +60,7 @@ namespace Convenience_Store_Management
             string userRole = "";
             string error = "";
             string fullName = username; // Assuming username is used as full name
-            DateTime? ngaySinh = null; // Date of birth (dob parameter for customer), null for employee
+            DateTime? ngaySinh = null; // dob null for employee
 
             if (NhanVienCb.Checked)
             {
@@ -76,15 +75,12 @@ namespace Convenience_Store_Management
                 MessageBox.Show("Vui lòng chọn loại tài khoản (Nhân viên hoặc Khách hàng).", "Lỗi Đăng Ký", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            // Validate basic inputs
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
                 MessageBox.Show("Vui lòng nhập tên đăng nhập và mật khẩu.", "Lỗi Đăng Ký", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Add password length validation
             if (password.Length < 7)
             {
                 MessageBox.Show("Mật khẩu phải có ít nhất 7 ký tự.", "Lỗi Đăng Ký", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -114,8 +110,8 @@ namespace Convenience_Store_Management
                     MessageBox.Show("Số điện thoại nhân viên phải có đúng 10 chữ số.", "Lỗi Đăng Ký", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                identifier = manv_text.Text.Trim(); // MaNhanVien
-                fullName = username; // HoTenNV (used as full name for employee)
+                identifier = manv_text.Text.Trim();
+                fullName = username;
             }
             else if (userRole == "Customer")
             {
@@ -143,7 +139,7 @@ namespace Convenience_Store_Management
 
             try
             {
-                // FIX: Pass all required arguments to RegisterAccount based on userRole
+                // Pass all required arguments to RegisterAccount based on userRole
                 if (userRole == "Employee")
                 {
                     if (blTaiKhoan.RegisterAccount(username, password, userRole, identifier, fullName, cleanPhoneNumber, null, ref error))

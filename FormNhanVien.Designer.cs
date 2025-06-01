@@ -129,6 +129,7 @@ namespace Convenience_Store_Management
             this.ClientSize = new System.Drawing.Size(980, 547);
             this.Controls.Add(this.pnlNhanVien);
             this.Controls.Add(this.panelNhanVien);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "FormNhanVien";
             this.Text = "Form Nhân Viên";

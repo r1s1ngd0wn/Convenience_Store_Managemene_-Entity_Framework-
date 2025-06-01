@@ -35,6 +35,8 @@ namespace Convenience_Store_Management.GUI
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.dgvGioHang = new System.Windows.Forms.DataGridView();
+            this.lblTongThanhTien = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGioHang)).BeginInit();
             this.SuspendLayout();
             // 
@@ -84,10 +86,34 @@ namespace Convenience_Store_Management.GUI
             this.dgvGioHang.Size = new System.Drawing.Size(860, 326);
             this.dgvGioHang.TabIndex = 23;
             // 
+            // lblTongThanhTien
+            // 
+            this.lblTongThanhTien.AutoSize = true;
+            this.lblTongThanhTien.Font = new System.Drawing.Font("Sans Serif Collection", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTongThanhTien.Location = new System.Drawing.Point(686, 45);
+            this.lblTongThanhTien.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblTongThanhTien.Name = "lblTongThanhTien";
+            this.lblTongThanhTien.Size = new System.Drawing.Size(32, 39);
+            this.lblTongThanhTien.TabIndex = 24;
+            this.lblTongThanhTien.Text = "0";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Sans Serif Collection", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(413, 45);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(203, 39);
+            this.label2.TabIndex = 25;
+            this.label2.Text = "Tổng thành tiền:";
+            // 
             // UC_GioHang_Khach
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lblTongThanhTien);
             this.Controls.Add(this.dgvGioHang);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
@@ -107,5 +133,7 @@ namespace Convenience_Store_Management.GUI
         private Button button1;
         private Label label1;
         private DataGridView dgvGioHang;
+        private Label lblTongThanhTien;
+        private Label label2;
     }
 }

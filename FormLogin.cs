@@ -1,32 +1,30 @@
-﻿// FormLogin.cs
-using System;
+﻿using System;
 using System.Windows.Forms;
-using QLBanHang_3Tang.BS_layer; // Đảm bảo namespace này đúng
+using QLBanHang_3Tang.BS_layer;
 using Convenience_Store_Management.Helper;
 
 namespace Convenience_Store_Management
 {
     public partial class FormLogin : Form
     {
-        private BLTaiKhoan blTaiKhoan = new BLTaiKhoan(); // Khởi tạo BLL
+        private BLTaiKhoan blTaiKhoan = new BLTaiKhoan(); 
 
         public FormLogin()
         {
             InitializeComponent();
             txtPwd.PasswordChar = '*'; // Ẩn mật khẩu mặc định
-            NhanVienCb.Checked = true; // Đặt lựa chọn mặc định
+            NhanVienCb.Checked = true;
         }
 
         private void cbShowPwd_CheckedChanged(object sender, EventArgs e)
         {
-            // Chuyển đổi hiển thị mật khẩu
             if (cbShowPwd.Checked)
             {
-                txtPwd.PasswordChar = '\0'; // Hiển thị mật khẩu
+                txtPwd.PasswordChar = '\0';
             }
             else
             {
-                txtPwd.PasswordChar = '*'; // Ẩn mật khẩu
+                txtPwd.PasswordChar = '*';
             }
         }
 
@@ -64,14 +62,14 @@ namespace Convenience_Store_Management
                 if (userRole == "Employee")
                 {
                     string maNhanVien = blTaiKhoan.LayMaNhanVienTuTenDangNhap(username, ref error);
-                    SessionManager.CurrentLoggedInEmployeeId = maNhanVien; // Store employee ID
+                    SessionManager.CurrentLoggedInEmployeeId = maNhanVien;
                     FormNhanVien formNhanVien = new FormNhanVien();
                     formNhanVien.Show();
                 }
                 else if (userRole == "Customer")
                 {
                     string sdtKhachHang = blTaiKhoan.LaySDTKhachHangTuTenDangNhap(username, ref error);
-                    SessionManager.CurrentLoggedInCustomerSdt = sdtKhachHang; // Store customer SDT
+                    SessionManager.CurrentLoggedInCustomerSdt = sdtKhachHang;
                     FormKhachHang formKhachHang = new FormKhachHang();
                     formKhachHang.Show();
                 }

@@ -1,5 +1,4 @@
-﻿// GUI/UC_HoaDon.cs
-using System;
+﻿using System;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -26,18 +25,16 @@ namespace Convenience_Store_Management.GUI
         {
             invoiceDetailTable = new DataTable();
             invoiceDetailTable.Columns.Add("MaSanPham", typeof(string));
-            invoiceDetailTable.Columns.Add("TenSP", typeof(string)); // We will fetch this for display
+            invoiceDetailTable.Columns.Add("TenSP", typeof(string));
             invoiceDetailTable.Columns.Add("SoLuong", typeof(int));
-            invoiceDetailTable.Columns.Add("GiaBan", typeof(decimal)); // Price at time of sale
+            invoiceDetailTable.Columns.Add("GiaBan", typeof(decimal));
             invoiceDetailTable.Columns.Add("ThanhTien", typeof(decimal));
 
             dgvInvoiceDetails.DataSource = invoiceDetailTable;
 
-            // Configure DataGridView columns
-            dgvInvoiceDetails.AutoGenerateColumns = false; // We will define columns manually
+            dgvInvoiceDetails.AutoGenerateColumns = false;
 
             // Add columns to dgvInvoiceDetails
-            // Check if columns already exist before adding to avoid duplicates if designer generates them
             if (!dgvInvoiceDetails.Columns.Contains("ColMaSP"))
             {
                 dgvInvoiceDetails.Columns.Add("ColMaSP", "Mã SP");
@@ -72,11 +69,10 @@ namespace Convenience_Store_Management.GUI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // 1. Retrieve data from UI controls
-            string maSanPham = txtMaSP.Text.Trim(); // Use MaSP directly
+
+            string maSanPham = txtMaSP.Text.Trim();
             string soLuongStr = txtSoLuong.Text.Trim();
 
-            // Basic validation for product input
             if (string.IsNullOrEmpty(maSanPham) || string.IsNullOrEmpty(soLuongStr))
             {
                 MessageBox.Show("Vui lòng nhập Mã Sản Phẩm và Số lượng.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -92,9 +88,8 @@ namespace Convenience_Store_Management.GUI
 
             string error = "";
 
-            // Fetch product details from BLHangHoa based on MaSanPham
-            // We need TenSP and Gia (sale price)
-            var productInfo = blHoaDonBan.GetProductDetailsByMaSP(maSanPham); // Assuming BLHoaDonBan has this method
+            // Fetch product details from BLHangHoa based on MaSanPham (TenSP and Gia (sale price))
+            var productInfo = blHoaDonBan.GetProductDetailsByMaSP(maSanPham);
 
             if (productInfo == null)
             {
@@ -115,7 +110,6 @@ namespace Convenience_Store_Management.GUI
 
             decimal thanhTien = soLuong * giaBan;
 
-            // Check if product already exists in the current invoice details table
             DataRow existingRow = invoiceDetailTable.AsEnumerable()
                                                    .FirstOrDefault(row => row.Field<string>("MaSanPham") == maSanPham);
 
@@ -132,12 +126,9 @@ namespace Convenience_Store_Management.GUI
             }
             else
             {
-                // Add product to the in-memory DataTable
                 invoiceDetailTable.Rows.Add(maSanPham, tenSP, soLuong, giaBan, thanhTien);
             }
 
-
-            // Clear product-specific input fields for the next item
             txtMaSP.Clear();
             txtSoLuong.Clear();
 
@@ -146,26 +137,24 @@ namespace Convenience_Store_Management.GUI
 
         private void UC_HoaDon_Load(object sender, EventArgs e)
         {
-            txtMaHD.Text = "HDB" + DateTime.Now.ToString("yyyyMMddHHmmss"); // Generate a new invoice code
-            txtMaHD.ReadOnly = true; // Make MaHD read-only since it's auto-generated
-            txtMaNV.Text = SessionManager.CurrentLoggedInEmployeeId; // Assuming this is set when the employee logs in
-            txtMaNV.ReadOnly = true; // Make MaNV read-only since it's auto-filled from session
+            txtMaHD.Text = "HDB" + DateTime.Now.ToString("yyyyMMddHHmmss"); 
+            txtMaHD.ReadOnly = true;
+            txtMaNV.Text = SessionManager.CurrentLoggedInEmployeeId;
+            txtMaNV.ReadOnly = true;
         }
 
         private void btnXuLyHD_Click(object sender, EventArgs e)
         {
             string maHoaDon = "HDB" + DateTime.Now.ToString("yyyyMMddHHmmss");
-            string maNhanVien = SessionManager.CurrentLoggedInEmployeeId; // Assuming this is set when the employee logs in
-            DateTime ngayBan = dtpNgayBan.Value; // Get the selected date
+            string maNhanVien = SessionManager.CurrentLoggedInEmployeeId; 
+            DateTime ngayBan = dtpNgayBan.Value; 
 
-            // Validate invoice header fields
             if (string.IsNullOrEmpty(maHoaDon) || string.IsNullOrEmpty(maNhanVien))
             {
                 MessageBox.Show("Vui lòng nhập Mã Hóa Đơn và Mã Nhân Viên.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Check if there are any products added to the invoice
             if (invoiceDetailTable.Rows.Count == 0)
             {
                 MessageBox.Show("Vui lòng thêm ít nhất một sản phẩm vào hóa đơn.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -173,18 +162,16 @@ namespace Convenience_Store_Management.GUI
             }
 
             string error = "";
-            string sdtKhachHang = null; // Assuming no customer SDT input on this UI
+            string sdtKhachHang = null;
 
-            // FIX: Include the ngayBan parameter in the ProcessSaleTransaction call
             if (blHoaDonBan.ProcessSaleTransaction(maHoaDon, maNhanVien, sdtKhachHang, invoiceDetailTable, ngayBan, ref error))
             {
                 MessageBox.Show("Hóa đơn đã được hoàn tất thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Clear all fields and the temporary invoice details table
                 txtMaHD.Clear();
                 txtMaNV.Clear();
-                dtpNgayBan.Value = DateTime.Now; // Reset for next invoice
-                invoiceDetailTable.Clear(); // Clear all rows from the DataTable
+                dtpNgayBan.Value = DateTime.Now;
+                invoiceDetailTable.Clear();
             }
             else
             {

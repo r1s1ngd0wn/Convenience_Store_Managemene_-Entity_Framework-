@@ -15,28 +15,18 @@ namespace Convenience_Store_Management.GUI
         public UC_TimKiem()
         {
             InitializeComponent();
-            // Hook up the Load event handler
             this.Load += new System.EventHandler(this.UC_TimKiem_Load);
-            // NEW: Hook up the btnUpdate's Click event
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
-            // Optional: When a row is selected in dataGridView1, populate the update textboxes
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClickForUpdate);
         }
 
-        // NEW: UC_TimKiem_Load event handler to preload data
         private void UC_TimKiem_Load(object sender, EventArgs e)
         {
-            // Trigger each search button's click event with null arguments.
-            // This will use the current (empty) textbox values to search,
-            // effectively loading all data due to the LIKE '%%' in the BL queries.
             btnTimHH_Click(null, null); // Preload all products
             btnTimHD_Click(null, null); // Preload all invoices
             btnTimKH_Click(null, null); // Preload all customers
         }
 
-
-
-        // Event handler for "Tìm kiếm" (Search) button on "Hàng hóa" tab
         private void btnTimHH_Click(object sender, EventArgs e)
         {
             string maHangHoa = txtMaHH.Text.Trim();
@@ -57,23 +47,19 @@ namespace Convenience_Store_Management.GUI
             }
         }
 
-        //Event handler to populate update textboxes when a row is clicked
         private void dataGridView1_CellClickForUpdate(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && e.ColumnIndex >= 0) // Ensure a valid cell is clicked
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
-                // Populate textboxes with current values for editing
                 txtGiaBanMoi.Text = row.Cells["Gia"].Value?.ToString();
                 txtGiaNhapMoi.Text = row.Cells["GiaNhap"].Value?.ToString();
                 txtSoLuongMoi.Text = row.Cells["SoLuong"].Value?.ToString();
             }
         }
 
-        // NEW: Event handler for btnUpdate (Update button)
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            // 1. Get selected MaSanPham from the DataGridView
             if (dataGridView1.SelectedRows.Count == 0)
             {
                 MessageBox.Show("Vui lòng chọn một hàng hóa từ danh sách để cập nhật.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -87,12 +73,10 @@ namespace Convenience_Store_Management.GUI
                 return;
             }
 
-            // 2. Get new values from the update textboxes
             string giaBanMoiStr = txtGiaBanMoi.Text.Trim();
             string giaNhapMoiStr = txtGiaNhapMoi.Text.Trim();
             string soLuongMoiStr = txtSoLuongMoi.Text.Trim();
 
-            // 3. Validate input
             decimal newGiaBan;
             decimal newGiaNhap;
             int newSoLuong;
@@ -119,7 +103,6 @@ namespace Convenience_Store_Management.GUI
                 return;
             }
 
-            // 4. Call BLL method to update the product
             string error = "";
             bool success = false;
 
@@ -131,13 +114,10 @@ namespace Convenience_Store_Management.GUI
                 {
                     MessageBox.Show($"Cập nhật hàng hóa '{maSanPham}' thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // Clear input fields after successful update
                     txtGiaBanMoi.Clear();
                     txtGiaNhapMoi.Clear();
                     txtSoLuongMoi.Clear();
 
-                    // 5. Refresh the DataGridView to show updated data
-                    // Re-run the current search by simulating a click on btnTimHH (Tìm kiếm button)
                     btnTimHH_Click(null, null);
                 }
                 else
@@ -151,7 +131,6 @@ namespace Convenience_Store_Management.GUI
             }
         }
 
-        // Event handler for "Tìm kiếm" (Search) button on "Hóa đơn" tab
         private void btnTimHD_Click(object sender, EventArgs e)
         {
             string maHoaDon = txtMaHD.Text.Trim();
@@ -177,10 +156,9 @@ namespace Convenience_Store_Management.GUI
             }
         }
 
-        // Event handler for "Tìm kiếm" (Search) button on "Khách hàng" tab
         private void btnTimKH_Click(object sender, EventArgs e)
         {
-            string sdtKhachHang = textBox1.Text.Trim(); // This is the textbox for SDT
+            string sdtKhachHang = textBox1.Text.Trim();
             string error = "";
             DataSet ds = blKhachHang.TimKhachHang(sdtKhachHang, ref error);
             if (ds != null && ds.Tables.Count > 0)
